@@ -21,7 +21,7 @@ dp = Dispatcher()
 
 @dp.message(CommandStart())
 async def start(msg: types.Message):
-    await msg.answer("Привет! Я бот, который поможет вам определить качество сварки. Просто отправьте мне изображение сварного шва, и я постараюсь оценить его качество. Давайте начнем! 🛠️"+"\n" + "")
+    await msg.answer("Привет! Я бот, который поможет вам определить качество сварки. Просто отправьте мне изображение сварного шва, и я постараюсь оценить его качество. \nДля начала отправьте фото! 🛠️"+"\n" + "")
 @dp.message(F.photo)
 async def handle_photo(message: Message):
     global photo_url, model, model_path, image_path
@@ -73,7 +73,7 @@ async def handle_photo(message: Message):
                         string += f'\nEnd x: {r.boxes.xyxy.cpu().numpy()[predict][x]}'
                     elif x == 3:
                         string += f'\nEnd y: {r.boxes.xyxy.cpu().numpy()[predict][x]}'
-                await message.answer(f'Good Welding:\n{string}')
+                await message.answer(f'True\nGood Welding:\n{string}')
         elif (predicted_classes[predict] == 'Bad Welding'):
             for r in model(image_path):
                 for x in range(0, 4):
@@ -85,7 +85,7 @@ async def handle_photo(message: Message):
                         string += f'\nEnd x: {r.boxes.xyxy.cpu().numpy()[predict][x]}'
                     elif x == 3:
                         string += f'\nEnd y: {r.boxes.xyxy.cpu().numpy()[predict][x]}'
-                await message.answer(f'Bad Welding:\n{string}')
+                await message.answer(f'Flase\nBad Welding:\n{string}')
         elif (predicted_classes[predict] == 'Crack'):
             for r in model(image_path):
                 for x in range(0, 4):
@@ -109,7 +109,7 @@ async def handle_photo(message: Message):
                         string += f'\nEnd x: {r.boxes.xyxy.cpu().numpy()[predict][x]}'
                     elif x == 3:
                         string += f'\nEnd y: {r.boxes.xyxy.cpu().numpy()[predict][x]}'
-                await message.answer(f'Excess Reinforcement:\n{string}')
+                await message.answer(f'Flase\nExcess Reinforcement:\n{string}')
                 # await message.answer(f'Excess Reinforcement:\n{r.boxes.xywh.cpu().numpy()[predict]}')
         elif (predicted_classes[predict] == 'Porosity'):
             for r in model(image_path):
@@ -122,7 +122,7 @@ async def handle_photo(message: Message):
                         string += f'\nEnd x: {r.boxes.xyxy.cpu().numpy()[predict][x]}'
                     elif x == 3:
                         string += f'\nEnd y: {r.boxes.xyxy.cpu().numpy()[predict][x]}'
-                await message.answer(f'Porosity:\n{string}')
+                await message.answer(f'Flase\nPorosity:\n{string}')
                 # await message.answer(f'Porosity:\n{r.boxes.xywh.cpu().numpy()[predict]}')
         elif (predicted_classes[predict] == 'Spatters'):
             for r in model(image_path):
@@ -135,7 +135,7 @@ async def handle_photo(message: Message):
                         string += f'\nEnd x: {r.boxes.xyxy.cpu().numpy()[predict][x]}'
                     elif x == 3:
                         string += f'\nEnd y: {r.boxes.xyxy.cpu().numpy()[predict][x]}'
-                await message.answer(f'Spatters:\n{string}')
+                await message.answer(f'Flase\nSpatters:\n{string}')
                 # await message.answer(f'Spatters:\n{r.boxes.xywh.cpu().numpy()[predict]}')
 
 
@@ -153,27 +153,4 @@ if __name__ == "__main__":
     asyncio.run(main())
 
 # 7126742135:AAEs4-OVgJGXaZK2JAe3spml5lR9AxiJHZI
-# def driveSkript(i):
-#     # URL для загрузки изображений
-#     upload_url = f"https://api.roboflow.com/dataset/{PROJECT_ID}/upload"
-
-#     # Путь к изображению, которое вы хотите загрузить
-#     image_path = f"flower_image{i}.jpg"
-
-#     # Открываем файл изображения
-#     with open(f"flower_image{i}.jpg", "rb") as file:
-#         # Отправляем POST запрос на загрузку изображения
-#         headers = {
-#             "Authorization": f"Bearer {API_KEY}"
-#         }
-#         files = {
-#             "file": file
-#         }
-#         response = requests.post(upload_url, headers=headers, files=files)
-
-#     # Проверяем ответ
-#     if response.status_code == 200:
-#         print("Изображение успешно загружено на Roboflow!")
-#         print("Ответ от сервера:", response.json())
-#     else:
-#         print("Ошибка при загрузке изображения на Roboflow:", response.text)
+  
